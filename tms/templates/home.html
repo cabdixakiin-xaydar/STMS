@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STMS - Discover Somaliland's Beauty | 2025</title>
+    <meta name="description" content="Official Somali Tourism Management System - Book authentic experiences, cultural tours, and adventure packages across Somalia">
+    <meta name="keywords" content="Somalia tourism, Somali travel, Mogadishu tours, Laas Geel, Berbera beaches">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="STMS - Discover Somalia's Hidden Gems">
+    <meta property="og:description" content="Book authentic Somali travel experiences with the official tourism platform">
+    <meta property="og:image" content="https://stms.somalia.travel/images/social-preview.jpg">
+    <meta property="og:url" content="https://stms.somalia.travel">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" as="font" crossorigin>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-dark: #172554;
+            --secondary-color: #10b981;
+            --secondary-dark: #059669;
+            --accent-color: #f59e0b;
+            --accent-dark: #d97706;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --success-color: #22c55e;
+            --warning-color: #f97316;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand img {
+            height: 32px;
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+        }
+        
+        .nav-link:hover:before, .nav-link.active:before {
+            width: 100%;
+        }
+        
+        /* Buttons */
+        .btn {
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary:focus {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-accent:hover, .btn-accent:focus {
+            background-color: var(--accent-dark);
+            border-color: var(--accent-dark);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(23, 37, 84, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 8rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section:after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f8fafc" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f8fafc" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f8fafc"/></svg>');
+            background-size: cover;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-image {
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: perspective(1000px) rotateY(-10deg);
+            transition: all 0.5s ease;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero-image:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background-color: white;
+            padding: 3rem 0;
+            position: relative;
+            z-index: 2;
+            margin-top: -30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        /* Packages Section */
+        .packages-section {
+            padding: 5rem 0;
+            background-color: var(--light-color);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-weight: 800;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            font-size: 2.5rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 1rem auto 0;
+        }
+        
+        .package-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            background-color: white;
+            position: relative;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .package-card-img {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .package-card:hover .package-card-img {
+            transform: scale(1.05);
+        }
+        
+        .package-card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .package-card-body {
+            padding: 1.5rem;
+        }
+        
+        .package-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .package-card-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .package-card-meta i {
+            margin-right: 5px;
+        }
+        
+        .package-card-meta .duration {
+            margin-left: 1rem;
+        }
+        
+        .package-card-text {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .package-card-footer {
+            background-color: transparent;
+            border-top: none;
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .package-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .package-price-discount {
+            font-size: 1rem;
+            text-decoration: line-through;
+            color: var(--text-light);
+            margin-left: 0.5rem;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        /* Destinations Section */
+        .destinations-section {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .destination-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .destination-card-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .destination-card:hover .destination-card-img {
+            transform: scale(1.05);
+        }
+        
+        .destination-card-body {
+            padding: 1.5rem;
+        }
+        
+        .destination-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .destination-card-text {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Why Choose Us Section */
+        .why-choose-section {
+            padding: 5rem 0;
+            background-color: var(--light-color);
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .feature-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-card:before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(16, 185, 129, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+            z-index: 0;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.25rem;
+        }
+        
+        .testimonial-rating {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(255,255,255,0.1)" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="rgba(255,255,255,0.1)" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Newsletter Section */
+        .newsletter-section {
+            padding: 4rem 0;
+            background-color: var(--light-color);
+        }
+        
+        .newsletter-card {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            border-radius: 12px;
+            padding: 3rem;
+            color: white;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .newsletter-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-text {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 5rem 0 2rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .footer-about {
+            margin-bottom: 2rem;
+        }
+        
+        .footer-about-text {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .footer-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            color: white;
+        }
+        
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-contact-icon {
+            margin-right: 1rem;
+            color: var(--secondary-color);
+            font-size: 1.25rem;
+            margin-top: 2px;
+        }
+        
+        .footer-contact-text {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .footer-legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .footer-legal-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-legal-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Booking Modal */
+        .booking-modal .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+        
+        .booking-modal .modal-title {
+            font-weight: 700;
+        }
+        
+        .booking-modal .modal-body {
+            padding: 2rem;
+        }
+        
+        .booking-modal .modal-footer {
+            border-top: none;
+            padding: 1.5rem;
+            background-color: var(--light-color);
+        }
+        
+        .booking-summary {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .booking-summary-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .booking-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .booking-summary-label {
+            color: var(--text-light);
+        }
+        
+        .booking-summary-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .booking-summary-total {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .payment-method {
+            width: 60px;
+            height: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover, .payment-method.active {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 1px var(--secondary-color);
+        }
+        
+        .payment-method img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1199.98px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.25rem;
+            }
+        }
+        
+        @media (max-width: 991.98px) {
+            .hero-section {
+                padding: 6rem 0 4rem;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                margin-top: 3rem;
+                transform: none;
+            }
+            
+            .hero-image:hover {
+                transform: none;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 5rem 0 3rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-header {
+                margin-bottom: 3rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .cta-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .footer {
+                padding: 3rem 0 2rem;
+            }
+            
+            .footer-col {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Utility Classes */
+        .rounded-lg {
+            border-radius: 12px;
+        }
+        
+        .shadow-sm {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .shadow-md {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .shadow-lg {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .opacity-90 {
+            opacity: 0.9;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--light-color);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://via.placeholder.com/40x40" alt="STMS Logo">
+                <span>STMS</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#packages">Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#destinations">Destinations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#why-us">Why Choose Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            More
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#about">About Somaliland</a></li>
+                            <li><a class="dropdown-item" href="#faq">FAQ</a></li>
+                            <li><a class="dropdown-item" href="#blog">Travel Blog</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#contact">Contact Us</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-outline-light" href="/accounts/login/">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">Discover the Hidden Gems of Somaliland</h1>
+                    <p class="hero-subtitle">Experience pristine beaches, ancient cities, and vibrant culture with our expertly crafted tour packages. Your adventure of a lifetime starts here.</p>
+                    <div class="hero-buttons">
+                        <a href="#packages" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-compass me-1"></i> Explore Tours
+                        </a>
+                        <a href="#destinations" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-map me-1"></i> View Destinations
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                         alt="Somalia Landscape" 
+                         class="img-fluid hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-card">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">Happy Travelers</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Tour Packages</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-card">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Destinations</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfaction Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Packages -->
+    <section id="packages" class="packages-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Featured Tour Packages</h2>
+                <p class="section-subtitle">Handpicked experiences for your Somaliland adventure, carefully curated by our local experts</p>
+            </div>
+            
+            <!-- Filter Section -->
+            <div class="filter-section" data-aos="fade-up">
+                <form id="packageFilterForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="destinationFilter" class="form-label filter-label">Destination</label>
+                            <select class="form-select" id="destinationFilter">
+                                <option value="">All Destinations</option>
+                                <option value="hargeisa">Hargeisa</option>
+                                <option value="ceerigaabo">Ceerigaabo</option>
+                                <option value="berbera">Berbera</option>
+                                <option value="borama">Boorama</option>
+                                <option value="saylac">Saylac</option>
+                                <option value="burco">Burco</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="typeFilter" class="form-label filter-label">Package Type</label>
+                            <select class="form-select" id="typeFilter">
+                                <option value="">All Types</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="beach">Beach</option>
+                                <option value="wildlife">Wildlife</option>
+                                <option value="historical">Historical</option>
+                                <option value="culinary">Culinary</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="durationFilter" class="form-label filter-label">Duration</label>
+                            <select class="form-select" id="durationFilter">
+                                <option value="">Any Duration</option>
+                                <option value="1-3">1-3 Days</option>
+                                <option value="4-7">4-7 Days</option>
+                                <option value="8-14">8-14 Days</option>
+                                <option value="15+">15+ Days</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="row g-4" id="packageContainer">
+                <!-- Package 1 -->
+                <div class="col-md-6 col-lg-4 col-xl-3 package-card-wrapper" data-destination="mogadishu" data-type="cultural" data-duration="1-3" data-aos="fade-up">
+                    <div class="package-card">
+                        <div class="position-relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                 class="package-card-img" 
+                                 alt="Mogadishu City Tour">
+                            <span class="package-card-badge">Best Seller</span>
+                        </div>
+                        <div class="package-card-body">
+                            <h5 class="package-card-title">Hargeisa Heritage Tour</h5>
+                            <div class="package-card-meta">
+                                <span><i class="bi bi-geo-alt"></i> Hargeisa</span>
+                                <span class="duration"><i class="bi bi-clock"></i> 2 Days</span>
+                            </div>
+                            <p class="package-card-text">Explore the historic landmarks, vibrant markets, and cultural sites of Somaliland's capital city with our expert guides.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="package-price">$299</span>
+                                    <span class="package-price-discount">$399</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" data-package-id="1">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Package 2 -->
+                <div class="col-md-6 col-lg-4 col-xl-3 package-card-wrapper" data-destination="hargeisa" data-type="adventure" data-duration="4-7" data-aos="fade-up" data-aos-delay="100">
+                    <div class="package-card">
+                        <div class="position-relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                 class="package-card-img" 
+                                 alt="Laas Geel Caves">
+                            <span class="package-card-badge">Popular</span>
+                        </div>
+                        <div class="package-card-body">
+                            <h5 class="package-card-title">Laas Geel Expedition</h5>
+                            <div class="package-card-meta">
+                                <span><i class="bi bi-geo-alt"></i> Hargeisa</span>
+                                <span class="duration"><i class="bi bi-clock"></i> 5 Days</span>
+                            </div>
+                            <p class="package-card-text">Discover ancient rock art dating back thousands of years in these spectacular caves with our archaeology experts.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="package-price">$450</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" data-package-id="2">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Package 3 -->
+                <div class="col-md-6 col-lg-4 col-xl-3 package-card-wrapper" data-destination="berbera" data-type="beach" data-duration="1-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="package-card">
+                        <div class="position-relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                 class="package-card-img" 
+                                 alt="Beach Getaway">
+                            <span class="package-card-badge">Limited Time</span>
+                        </div>
+                        <div class="package-card-body">
+                            <h5 class="package-card-title">Berbera Beach Retreat</h5>
+                            <div class="package-card-meta">
+                                <span><i class="bi bi-geo-alt"></i> Berbera</span>
+                                <span class="duration"><i class="bi bi-clock"></i> 3 Days</span>
+                            </div>
+                            <p class="package-card-text">Unwind on pristine beaches with crystal clear waters and white sand in this exclusive coastal getaway.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="package-price">$350</span>
+                                    <span class="package-price-discount">$420</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" data-package-id="3">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Package 4 -->
+                <div class="col-md-6 col-lg-4 col-xl-3 package-card-wrapper" data-destination="kismayo" data-type="wildlife" data-duration="8-14" data-aos="fade-up" data-aos-delay="300">
+                    <div class="package-card">
+                        <div class="position-relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                 class="package-card-img" 
+                                 alt="Wildlife Safari">
+                            <span class="package-card-badge">Adventure</span>
+                        </div>
+                        <div class="package-card-body">
+                            <h5 class="package-card-title">Hargeisa Wildlife Safari</h5>
+                            <div class="package-card-meta">
+                                <span><i class="bi bi-geo-alt"></i> Hargeisa</span>
+                                <span class="duration"><i class="bi bi-clock"></i> 10 Days</span>
+                            </div>
+                            <p class="package-card-text">Experience the diverse wildlife and natural beauty of Somaliland's national parks with our expert guides.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="package-price">$550</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" data-package-id="4">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="/packages/" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-grid me-1"></i> View All Packages
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section id="destinations" class="destinations-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Popular Destinations</h2>
+                <p class="section-subtitle">Explore the diverse beauty of Somaliland's most iconic locations</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Destination 1 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                    <div class="destination-card card h-100">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                             class="destination-card-img" 
+                             alt="Mogadishu">
+                        <div class="card-body">
+                            <h5 class="destination-card-title">Berbera</h5>
+                            <p class="destination-card-text">The vibrant capital city with rich history, beautiful beaches, and a thriving cultural scene.</p>
+                            <a href="/packages/?destination=berbera" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye me-1"></i> View Packages
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 2 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="destination-card card h-100">
+                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                             class="destination-card-img" 
+                             alt="Berbera">
+                        <div class="card-body">
+                            <h5 class="destination-card-title">Berbera</h5>
+                            <p class="destination-card-text">Famous for its beautiful beaches, historic port city, and stunning coastal landscapes.</p>
+                            <a href="/packages/?destination=berbera" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye me-1"></i> View Packages
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 3 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="destination-card card h-100">
+                        <img src="https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                             class="destination-card-img" 
+                             alt="Hargeisa">
+                        <div class="card-body">
+                            <h5 class="destination-card-title">Hargeisa</h5>
+                            <p class="destination-card-text">Gateway to the ancient Laas Geel cave paintings and a hub of Somali culture and commerce.</p>
+                            <a href="/packages/?destination=hargeisa" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye me-1"></i> View Packages
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="/destinations/" class="btn btn-outline-primary px-4 py-2">
+                    <i class="bi bi-map me-1"></i> Explore All Destinations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-us" class="why-choose-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Why Choose STMS</h2>
+                <p class="section-subtitle">We're committed to providing authentic, safe, and unforgettable Somali travel experiences</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5 class="feature-title">Safety First</h5>
+                        <p class="feature-text">Our tours prioritize your safety with vetted accommodations, secure transportation, and expert local guides.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h5 class="feature-title">Local Experts</h5>
+                        <p class="feature-text">Our guides are Somali natives with deep knowledge of history, culture, and hidden gems you won't find in guidebooks.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                        </div>
+                        <h5 class="feature-title">Authentic Experiences</h5>
+                        <p class="feature-text">We connect you with genuine cultural experiences, from traditional meals to artisan workshops and local festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-currency-exchange"></i>
+                        </div>
+                        <h5 class="feature-title">Best Value</h5>
+                        <p class="feature-text">We offer competitive pricing without compromising quality, with transparent costs and no hidden fees.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Traveler Stories</h2>
+                <p class="section-subtitle">What our customers say about their experiences with STMS</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="testimonial-card h-100">
+                        <div class="text-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" 
+                                 alt="Sarah J." 
+                                 class="testimonial-img">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-text">"The Hargeisa city tour was incredible! Our guide was knowledgeable and made us feel safe throughout the trip. The historical sites were breathtaking."</p>
+                            <h5 class="testimonial-author">Sarah J.</h5>
+                            <p class="text-muted small">Cultural Explorer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-card h-100">
+                        <div class="text-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" 
+                                 alt="Michael T." 
+                                 class="testimonial-img">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-text">"Laas Geel caves were breathtaking. The rock art is some of the best preserved I've seen anywhere in Africa. The guides were archaeology students who really knew their stuff."</p>
+                            <h5 class="testimonial-author">Michael T.</h5>
+                            <p class="text-muted small">Adventure Seeker</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card h-100">
+                        <div class="text-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" 
+                                 alt="Amina K." 
+                                 class="testimonial-img">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p class="testimonial-text">"As a diaspora Somali, this trip helped me reconnect with my heritage. The team took care of everything and arranged meetings with relatives I hadn't seen in decades."</p>
+                            <h5 class="testimonial-author">Amina K.</h5>
+                            <p class="text-muted small">Diaspora Traveler</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center" data-aos="fade-up">
+                    <h2 class="cta-title">Ready for Your Somaliland Adventure?</h2>
+                    <p class="cta-subtitle">Join thousands of travelers who have experienced the magic of Somalia with our trusted tourism services</p>
+                    <div class="cta-buttons">
+                        <a href="/accounts/register/" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-person-plus me-1"></i> Register Now
+                        </a>
+                        <a href="/contact/" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-chat-dots me-1"></i> Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-card" data-aos="fade-up">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h3 class="newsletter-title">Stay Updated</h3>
+                        <p class="newsletter-text">Subscribe to our newsletter for new tour packages, special offers, and travel tips about Somalia.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                            <button type="submit" class="btn btn-accent">
+                                <i class="bi bi-envelope-arrow-up me-1"></i> Subscribe
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 footer-col">
+                    <div class="footer-logo">
+                        <img src="https://via.placeholder.com/40x40" alt="STMS Logo">
+                        <span class="footer-logo-text">STMS</span>
+                    </div>
+                    <div class="footer-about">
+                        <p class="footer-about-text">Somaliland Tourism Management System is the official platform for discovering and booking authentic travel experiences across Somalia.</p>
+                        <div class="footer-social">
+                            <a href="#" class="footer-social-link"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="footer-social-link"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#" class="footer-social-link"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="footer-social-link"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="footer-social-link"><i class="bi bi-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 footer-col">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#packages">Tour Packages</a></li>
+                        <li><a href="#destinations">Destinations</a></li>
+                        <li><a href="#why-us">Why Choose Us</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#about">About Somaliland</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h5 class="footer-title">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="/blog/">Travel Blog</a></li>
+                        <li><a href="/travel-guide/">Travel Guide</a></li>
+                        <li><a href="/visa-info/">Visa Information</a></li>
+                        <li><a href="/safety/">Safety Tips</a></li>
+                        <li><a href="/contact/">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h5 class="footer-title">Contact Info</h5>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <p class="footer-contact-text">123 Tourism Street, Hargeisa, Somaliland</p>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <p class="footer-contact-text">+252 63 4######<br>+252 63 7089825</p>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <p class="footer-contact-text">info@somalitourism.com<br>bookings@somalitourism.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; 2025 Somaliland Tourism Management System. All rights reserved.
+                </div>
+                <div class="footer-legal-links">
+                    <a href="/privacy-policy/">Privacy Policy</a>
+                    <a href="/terms-of-service/">Terms of Service</a>
+                    <a href="/cookies-policy/">Cookies Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div class="modal fade booking-modal" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Book Your Tour</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="loginRequired" class="text-center py-4">
+                        <div class="mb-4">
+                            <i class="bi bi-lock" style="font-size: 3rem; color: var(--primary-color);"></i>
+                        </div>
+                        <h4>Login Required</h4>
+                        <p class="mb-4">You need to login to your account to book this package. Don't have an account yet?</p>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="/accounts/login/?next=/package/1/book/" class="btn btn-primary px-4">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                            </a>
+                            <a href="/accounts/register/" class="btn btn-outline-primary px-4">
+                                <i class="bi bi-person-plus me-1"></i> Register
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <form id="bookingForm" style="display: none;">
+                        <input type="hidden" id="packageId" name="package_id" value="">
+                        
+                        <div class="booking-summary">
+                            <h6 class="booking-summary-title">Booking Summary</h6>
+                            <div class="booking-summary-item">
+                                <span class="booking-summary-label">Package:</span>
+                                <span class="booking-summary-value" id="summaryPackage">Hargeisa Heritage Tour</span>
+                            </div>
+                            <div class="booking-summary-item">
+                                <span class="booking-summary-label">Duration:</span>
+                                <span class="booking-summary-value" id="summaryDuration">2 Days</span>
+                            </div>
+                            <div class="booking-summary-item">
+                                <span class="booking-summary-label">Base Price:</span>
+                                <span class="booking-summary-value" id="summaryPrice">$299 per person</span>
+                            </div>
+                            <div class="booking-summary-total">
+                                <span class="booking-summary-label">Estimated Total:</span>
+                                <span class="booking-summary-value" id="summaryTotal">$598</span>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-4">Traveler Information</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="last_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="nationality" class="form-label">Nationality</label>
+                                <select class="form-select" id="nationality" name="nationality" required>
+                                    <option value="">Select Nationality</option>
+                                    <option value="US">United States</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="SO">Somalia</option>
+                                    <option value="KE">Kenya</option>
+                                    <option value="ET">Ethiopia</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-4">Trip Details</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="start_date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="numberOfPeople" class="form-label">Number of Travelers</label>
+                                <select class="form-select" id="numberOfPeople" name="number_of_people" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1 Traveler</option>
+                                    <option value="2">2 Travelers</option>
+                                    <option value="3">3 Travelers</option>
+                                    <option value="4">4 Travelers</option>
+                                    <option value="5">5 Travelers</option>
+                                    <option value="6">6+ Travelers (Contact Us)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="specialRequests" class="form-label">Special Requests</label>
+                                <textarea class="form-control" id="specialRequests" name="special_requests" rows="3" placeholder="Dietary restrictions, accessibility needs, etc."></textarea>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-4">Payment Method</h5>
+                        <div class="payment-methods mb-3">
+                            <div class="payment-method active">
+                                <img src="https://via.placeholder.com/60x40?text=VISA" alt="Visa">
+                            </div>
+                            <div class="payment-method">
+                                <img src="https://via.placeholder.com/60x40?text=MC" alt="Mastercard">
+                            </div>
+                            <div class="payment-method">
+                                <img src="https://via.placeholder.com/60x40?text=AMEX" alt="American Express">
+                            </div>
+                            <div class="payment-method">
+                                <img src="https://via.placeholder.com/60x40?text=PP" alt="PayPal">
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+                            <label class="form-check-label" for="termsAgreement">
+                                I agree to the <a href="/terms/" target="_blank">Terms & Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <i class="bi bi-credit-card me-2"></i> Complete Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+    
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Initialize lazy loading for images
+        var lazyLoadInstance = new LazyLoad({
+            elements_selector: ".lazy",
+            threshold: 100
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Package filtering functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterForm = document.getElementById('packageFilterForm');
+            const destinationFilter = document.getElementById('destinationFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const durationFilter = document.getElementById('durationFilter');
+            const packageContainer = document.getElementById('packageContainer');
+            
+            function filterPackages() {
+                const destinationValue = destinationFilter.value.toLowerCase();
+                const typeValue = typeFilter.value.toLowerCase();
+                const durationValue = durationFilter.value;
+                
+                document.querySelectorAll('.package-card-wrapper').forEach(card => {
+                    const cardDestination = card.dataset.destination;
+                    const cardType = card.dataset.type;
+                    const cardDuration = card.dataset.duration;
+                    
+                    const destinationMatch = !destinationValue || cardDestination.includes(destinationValue);
+                    const typeMatch = !typeValue || cardType.includes(typeValue);
+                    const durationMatch = !durationValue || cardDuration === durationValue;
+                    
+                    if (destinationMatch && typeMatch && durationMatch) {
+                        card.style.display = 'block';
+                        AOS.refresh(); // Refresh animations for newly visible items
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            
+            destinationFilter.addEventListener('change', filterPackages);
+            typeFilter.addEventListener('change', filterPackages);
+            durationFilter.addEventListener('change', filterPackages);
+            
+            // Booking modal functionality
+            const bookingModal = document.getElementById('bookingModal');
+            const bookingForm = document.getElementById('bookingForm');
+            const loginRequired = document.getElementById('loginRequired');
+            
+            // Check if user is logged in (this would normally come from your backend)
+            const isLoggedIn = false; // Change this based on your authentication
+            
+            bookingModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const packageId = button.getAttribute('data-package-id');
+                
+                // Set package ID in form
+                document.getElementById('packageId').value = packageId;
+                
+                // Update modal content based on which package was clicked
+                if (packageId === '1') {
+                    document.getElementById('summaryPackage').textContent = 'Mogadishu Heritage Tour';
+                    document.getElementById('summaryDuration').textContent = '2 Days';
+                    document.getElementById('summaryPrice').textContent = '$299 per person';
+                    document.getElementById('summaryTotal').textContent = '$598';
+                } else if (packageId === '2') {
+                    document.getElementById('summaryPackage').textContent = 'Laas Geel Expedition';
+                    document.getElementById('summaryDuration').textContent = '5 Days';
+                    document.getElementById('summaryPrice').textContent = '$450 per person';
+                    document.getElementById('summaryTotal').textContent = '$900';
+                } else if (packageId === '3') {
+                    document.getElementById('summaryPackage').textContent = 'Berbera Beach Retreat';
+                    document.getElementById('summaryDuration').textContent = '3 Days';
+                    document.getElementById('summaryPrice').textContent = '$350 per person';
+                    document.getElementById('summaryTotal').textContent = '$700';
+                } else if (packageId === '4') {
+                    document.getElementById('summaryPackage').textContent = 'Kismayo Wildlife Safari';
+                    document.getElementById('summaryDuration').textContent = '10 Days';
+                    document.getElementById('summaryPrice').textContent = '$550 per person';
+                    document.getElementById('summaryTotal').textContent = '$1,100';
+                }
+                
+                // Show/hide login or booking form based on authentication status
+                if (isLoggedIn) {
+                    loginRequired.style.display = 'none';
+                    bookingForm.style.display = 'block';
+                } else {
+                    loginRequired.style.display = 'block';
+                    bookingForm.style.display = 'none';
+                }
+            });
+            
+            // Update estimated total when number of people changes
+            const numberOfPeople = document.getElementById('numberOfPeople');
+            if (numberOfPeople) {
+                numberOfPeople.addEventListener('change', function() {
+                    const people = parseInt(this.value) || 0;
+                    const priceText = document.getElementById('summaryPrice').textContent;
+                    const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
+                    const total = people * price;
+                    
+                    if (people > 0) {
+                        document.getElementById('summaryTotal').textContent = '$' + total.toLocaleString();
+                    } else {
+                        document.getElementById('summaryTotal').textContent = 'Select travelers';
+                    }
+                });
+            }
+            
+            // Payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Booking form submission
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Here you would normally send the form data to your backend
+                    // For demo purposes, we'll show a success message
+                    
+                    // Create a temporary success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'alert alert-success text-center';
+                    successMessage.innerHTML = `
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>Booking Successful!</strong> Redirecting to your booking confirmation...
+                    `;
+                    
+                    // Replace form with success message
+                    bookingForm.replaceWith(successMessage);
+                    
+                    // In a real application, you would submit the form via AJAX
+                    // and redirect to the booking confirmation page on success
+                    setTimeout(() => {
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(bookingModal);
+                        modal.hide();
+                        
+                        // Redirect to booking success page
+                        window.location.href = '/booking/success/STMS-12345/';
+                    }, 2000);
+                });
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL without page reload
+                        if (history.pushState) {
+                            history.pushState(null, null, targetId);
+                        } else {
+                            location.hash = targetId;
+                        }
+                    }
+                });
+            });
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input[type="email"]');
+                    const email = emailInput.value.trim();
+                    
+                    if (email) {
+                        // Here you would normally send the email to your backend
+                        // For demo purposes, we'll show a thank you message
+                        alert('Thank you for subscribing to our newsletter!');
+                        emailInput.value = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
