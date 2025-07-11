@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Add Image - {{ destination.name }} - STMS{% endblock %}
+{% block page_title %}Add Image to {{ destination.name }}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:destination-list' %}">Destinations</a></li>
+<li class="breadcrumb-item"><a href="{% url 'tms:destination-detail' destination.pk %}">{{ destination.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Add Image</li>
+{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent">
+        <h5 class="mb-0">Upload New Image</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">Image File</label>
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.image.errors|first }}
+                        </div>
+                        {% endif %}
+                        <div class="form-text">Recommended size: 1200x800px or similar aspect ratio</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.caption.id_for_label }}" class="form-label">Caption</label>
+                        {{ form.caption }}
+                        {% if form.caption.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.caption.errors|first }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                        {{ form.is_featured }}
+                        <label class="form-check-label" for="{{ form.is_featured.id_for_label }}">Featured Image</label>
+                        {% if form.is_featured.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.is_featured.errors|first }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'tms:destination-detail' destination.pk %}" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Upload Image
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if destination.images.exists %}
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-transparent">
+        <h5 class="mb-0">Existing Images</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            {% for image in destination.images.all %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="position-relative">
+                    <img src="{{ image.image.url }}" class="img-fluid rounded" alt="{{ image.caption|default:destination.name }}">
+                    {% if image.is_featured %}
+                    <span class="position-absolute top-0 start-0 m-1 badge bg-success">Featured</span>
+                    {% endif %}
+                </div>
+                <div class="text-center mt-2 small">
+                    {{ image.caption|truncatechars:20 }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

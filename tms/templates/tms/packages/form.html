@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if object %}Edit {{ object.name }}{% else %}Create New Tour Package{% endif %} - STMS
+{% endblock %}
+
+{% block page_title %}
+    {% if object %}Edit Tour Package{% else %}Create New Tour Package{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:package-list' %}">Tour Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if object %}Edit{% else %}Create{% endif %}
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Package Information</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">Package Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.name.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.package_type.id_for_label }}" class="form-label">Package Type</label>
+                    {{ form.package_type }}
+                    {% if form.package_type.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.package_type.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="{{ form.duration_days.id_for_label }}" class="form-label">Duration (days)</label>
+                    {{ form.duration_days }}
+                    {% if form.duration_days.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.duration_days.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ form.price_usd.id_for_label }}" class="form-label">Base Price ($)</label>
+                    {{ form.price_usd }}
+                    {% if form.price_usd.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.price_usd.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ form.discount_percentage.id_for_label }}" class="form-label">Discount (%)</label>
+                    {{ form.discount_percentage }}
+                    {% if form.discount_percentage.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.discount_percentage.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.destinations.id_for_label }}" class="form-label">Destinations</label>
+                {{ form.destinations }}
+                {% if form.destinations.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.destinations.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.description.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.highlights.id_for_label }}" class="form-label">Highlights</label>
+                    {{ form.highlights }}
+                    {% if form.highlights.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.highlights.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.inclusions.id_for_label }}" class="form-label">What's Included</label>
+                    {{ form.inclusions }}
+                    {% if form.inclusions.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.inclusions.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.exclusions.id_for_label }}" class="form-label">What's Not Included</label>
+                {{ form.exclusions }}
+                {% if form.exclusions.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.exclusions.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3 form-check">
+                {{ form.is_active }}
+                <label class="form-check-label" for="{{ form.is_active.id_for_label }}">Active Package</label>
+                {% if form.is_active.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.is_active.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% if object %}{% url 'tms:package-detail' pk=object.pk %}{% else %}{% url 'tms:package-list' %}{% endif %}" 
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-accent">
+                    {% if object %}Update Package{% else %}Create Package{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize select2 for destinations
+        $('#{{ form.destinations.id_for_label }}').select2({
+            placeholder: "Select destinations",
+            allowClear: true,
+            width: '100%',
+            theme: 'bootstrap-5'
+        });
+    });
+</script>
+{% endblock %}

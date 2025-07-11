@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guide.user.get_full_name }} - STMS{% endblock %}
+{% block page_title %}Tour Guide Details{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:guide-list' %}">Tour Guides</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ guide.user.get_full_name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                {% if guide.user.profile_picture %}
+                <img src="{{ guide.user.profile_picture.url }}" alt="{{ guide.user.get_full_name }}" 
+                     class="rounded-circle mb-3" width="150" height="150">
+                {% else %}
+                <div class="avatar-placeholder rounded-circle bg-accent text-dark d-flex align-items-center justify-content-center mx-auto mb-3" 
+                     style="width: 150px; height: 150px; font-size: 3rem;">
+                    {{ guide.user.first_name|first|upper }}{{ guide.user.last_name|first|upper }}
+                </div>
+                {% endif %}
+                
+                <h4>{{ guide.user.get_full_name }}</h4>
+                <p class="text-muted">{{ guide.specialization }}</p>
+                
+                <div class="d-flex justify-content-center mb-3">
+                    <span class="badge bg-accent text-dark fs-6">
+                        <i class="bi bi-star-fill"></i> {{ guide.rating|default:"0.0" }}/5.0
+                    </span>
+                </div>
+                
+                <div class="d-flex justify-content-center">
+                    {% if guide.is_available %}
+                    <span class="badge bg-success">Available</span>
+                    {% else %}
+                    <span class="badge bg-secondary">Unavailable</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Info</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-light">
+                        <span><i class="bi bi-card-heading me-2"></i> License</span>
+                        <span>{{ guide.license_number }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-light">
+                        <span><i class="bi bi-globe me-2"></i> Languages</span>
+                        <span>{{ guide.languages }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-light">
+                        <span><i class="bi bi-clock-history me-2"></i> Experience</span>
+                        <span>{{ guide.years_of_experience }} years</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-light">
+                        <span><i class="bi bi-cash-coin me-2"></i> Hourly Rate</span>
+                        <span>${{ guide.hourly_rate }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Biography</h5>
+                {% if request.user.is_staff or request.user.user_type == 'OPERATOR' %}
+                <a href="{% url 'tms:guide-update' guide.pk %}" class="btn btn-sm btn-accent">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if guide.bio %}
+                <p>{{ guide.bio }}</p>
+                {% else %}
+                <p class="text-muted">No biography provided</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Availability</h5>
+                <a href="{% url 'tms:guide-availability' guide.pk %}" class="btn btn-sm btn-accent">
+                    <i class="bi bi-calendar-check"></i> View Schedule
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="alert {% if guide.is_available %}alert-success{% else %}alert-warning{% endif %}">
+                    <i class="bi bi-info-circle"></i> 
+                    This guide is currently {% if not guide.is_available %}not {% endif %}available for bookings.
+                </div>
+                
+                {% if request.user.is_staff or request.user.user_type == 'OPERATOR' %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'tms:booking-create' %}?guide={{ guide.pk }}" class="btn btn-accent me-md-2">
+                        <i class="bi bi-calendar-plus"></i> Book This Guide
+                    </a>
+                    <a href="{% url 'tms:guide-availability' guide.pk %}" class="btn btn-outline-accent">
+                        <i class="bi bi-calendar-event"></i> Manage Availability
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

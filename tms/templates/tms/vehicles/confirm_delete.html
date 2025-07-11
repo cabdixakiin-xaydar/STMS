@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ vehicle }} - STMS{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:vehicle-list' %}">Vehicles</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'tms:vehicle-detail' vehicle.pk %}">{{ vehicle }}</a></li>
+    <li class="breadcrumb-item active">Delete</li>
+{% endblock %}
+
+{% block page_title %}Delete Vehicle{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <h5 class="alert-heading">Warning!</h5>
+            <p>You are about to delete the following vehicle:</p>
+            <hr>
+            <p class="mb-0"><strong>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</strong> ({{ vehicle.license_plate }})</p>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Associated Data</h5>
+                <p>Deleting this vehicle will also affect:</p>
+                <ul>
+                    <li><strong>{{ vehicle.booking_set.count }}</strong> future bookings</li>
+                    <li>All related availability records</li>
+                </ul>
+            </div>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'tms:vehicle-detail' vehicle.pk %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Confirm Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

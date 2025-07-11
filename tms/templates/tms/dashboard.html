@@ -1,0 +1,588 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - STMS{% endblock %}
+
+{% block page_title %}Tourism Management Dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Key Metrics -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase text-muted mb-2">Total Bookings</h6>
+                        <h2 class="mb-0">1,248</h2>
+                    </div>
+                    <div class="icon icon-shape bg-accent text-dark rounded-circle p-3">
+                        <i class="bi bi-calendar-check fs-4"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-success me-2"><i class="bi bi-arrow-up"></i> 12.5%</span>
+                    <span class="text-muted">vs last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase text-muted mb-2">Active Users</h6>
+                        <h2 class="mb-0">#</h2>
+                    </div>
+                    <div class="icon icon-shape bg-accent text-dark rounded-circle p-3">
+                        <i class="bi bi-person fs-4"></i>
+                    </div>
+                </div>
+                {% comment %} <div class="mt-3">
+                    <span class="text-success me-2"><i class="bi bi-arrow-up"></i> 18.3%</span>
+                    <span class="text-muted">vs last month</span>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase text-muted mb-2">Active Tourists</h6>
+                        <h2 class="mb-0">892</h2>
+                    </div>
+                    <div class="icon icon-shape bg-accent text-dark rounded-circle p-3">
+                        <i class="bi bi-people fs-4"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-success me-2"><i class="bi bi-arrow-up"></i> 9.7%</span>
+                    <span class="text-muted">vs last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase text-muted mb-2">Occupancy Rate</h6>
+                        <h2 class="mb-0">78%</h2>
+                    </div>
+                    <div class="icon icon-shape bg-accent text-dark rounded-circle p-3">
+                        <i class="bi bi-building fs-4"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-success me-2"><i class="bi bi-arrow-up"></i> 5.2%</span>
+                    <span class="text-muted">vs last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Revenue Chart -->
+    <div class="col-lg-8 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0">Revenue Overview (2025)</h6>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="revenueDropdown" data-bs-toggle="dropdown">
+                        Monthly
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-period="weekly">Weekly</a></li>
+                        <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
+                        <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Status -->
+    <div class="col-lg-4 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 py-3">
+                <h6 class="mb-0">Booking Status</h6>
+            </div>
+            <div class="card-body pt-0">
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="bookingStatusChart"></canvas>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <span class="badge badge-confirmed px-3 py-2">
+                            <i class="bi bi-circle-fill me-1"></i> Confirmed 68%
+                        </span>
+                        <span class="badge badge-pending px-3 py-2">
+                            <i class="bi bi-circle-fill me-1"></i> Pending 24%
+                        </span>
+                        <span class="badge badge-cancelled px-3 py-2">
+                            <i class="bi bi-circle-fill me-1"></i> Cancelled 8%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Bookings -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0">Recent Bookings</h6>
+                <a href="{% url 'tms:booking-list' %}" class="btn btn-sm btn-outline-secondary">
+                    View All <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-secondary">
+                            <tr>
+                                <th class="ps-3">Reference</th>
+                                <th>Customer</th>
+                                <th>Package</th>
+                                <th>Status</th>
+                                <th class="pe-3">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-3"><a href="#" class="text-accent">STMS-2025-0142</a></td>
+                                <td>Ahmed Mohamed</td>
+                                <td>Coastal Explorer</td>
+                                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                                <td class="pe-3">Jun 15</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3"><a href="#" class="text-accent">STMS-2025-0141</a></td>
+                                <td>Sarah Johnson</td>
+                                <td>Cultural Heritage</td>
+                                <td><span class="badge badge-pending">Pending</span></td>
+                                <td class="pe-3">Jun 14</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3"><a href="#" class="text-accent">STMS-2025-0140</a></td>
+                                <td>David Wilson</td>
+                                <td>Mogadishu Highlights</td>
+                                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                                <td class="pe-3">Jun 12</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3"><a href="#" class="text-accent">STMS-2025-0139</a></td>
+                                <td>Fatima Abdi</td>
+                                <td>Historical Sites</td>
+                                <td><span class="badge badge-cancelled">Cancelled</span></td>
+                                <td class="pe-3">Jun 10</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3"><a href="#" class="text-accent">STMS-2025-0138</a></td>
+                                <td>Michael Brown</td>
+                                <td>Adventure Safari</td>
+                                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                                <td class="pe-3">Jun 08</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Destinations -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0">Top Destinations</h6>
+                <a href="{% url 'tms:destination-list' %}" class="btn btn-sm btn-outline-secondary">
+                    View All <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-secondary">
+                            <tr>
+                                <th class="ps-3">Destination</th>
+                                <th>Location</th>
+                                <th>Bookings</th>
+                                <th class="pe-3">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-3">
+                                    <a href="#" class="d-flex align-items-center text-accent">
+                                        <img src="https://via.placeholder.com/40x40" class="rounded-circle me-2" width="24" height="24">
+                                        Laas Geel
+                                    </a>
+                                </td>
+                                <td>Hargeisa</td>
+                                <td>248</td>
+                                <td class="pe-3">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-half text-warning"></i>
+                                    (87)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3">
+                                    <a href="#" class="d-flex align-items-center text-accent">
+                                        <img src="https://via.placeholder.com/40x40" class="rounded-circle me-2" width="24" height="24">
+                                        Mogadishu Beach
+                                    </a>
+                                </td>
+                                <td>Mogadishu</td>
+                                <td>192</td>
+                                <td class="pe-3">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star text-warning"></i>
+                                    (64)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3">
+                                    <a href="#" class="d-flex align-items-center text-accent">
+                                        <img src="https://via.placeholder.com/40x40" class="rounded-circle me-2" width="24" height="24">
+                                        Berbera Port
+                                    </a>
+                                </td>
+                                <td>Berbera</td>
+                                <td>156</td>
+                                <td class="pe-3">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    (42)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3">
+                                    <a href="#" class="d-flex align-items-center text-accent">
+                                        <img src="https://via.placeholder.com/40x40" class="rounded-circle me-2" width="24" height="24">
+                                        Kismayo National Park
+                                    </a>
+                                </td>
+                                <td>Kismayo</td>
+                                <td>128</td>
+                                <td class="pe-3">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star text-warning"></i>
+                                    (35)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3">
+                                    <a href="#" class="d-flex align-items-center text-accent">
+                                        <img src="https://via.placeholder.com/40x40" class="rounded-circle me-2" width="24" height="24">
+                                        Golis Mountains
+                                    </a>
+                                </td>
+                                <td>Burao</td>
+                                <td>104</td>
+                                <td class="pe-3">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-half text-warning"></i>
+                                    (28)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Upcoming Tours -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0">Upcoming Tours (Next 7 Days)</h6>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="upcomingToursDropdown" data-bs-toggle="dropdown">
+                        Next 7 Days
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-period="today">Today</a></li>
+                        <li><a class="dropdown-item" href="#" data-period="7days">Next 7 Days</a></li>
+                        <li><a class="dropdown-item" href="#" data-period="30days">Next 30 Days</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card border-0 h-100">
+                            <div class="position-relative">
+                                <img src="https://source.unsplash.com/random/600x400?beach" class="card-img-top rounded-top" alt="Tour" style="height: 150px; object-fit: cover;">
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-accent text-dark">
+                                    Jun 15-18
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Coastal Explorer</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt"></i> Mogadishu Beach
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary">
+                                        12 <i class="bi bi-people"></i>
+                                    </span>
+                                    <a href="#" class="btn btn-sm btn-outline-accent">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card border-0 h-100">
+                            <div class="position-relative">
+                                <img src="https://source.unsplash.com/random/600x400?cave" class="card-img-top rounded-top" alt="Tour" style="height: 150px; object-fit: cover;">
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-accent text-dark">
+                                    Jun 16-17
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Laas Geel Tour</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt"></i> Hargeisa
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary">
+                                        8 <i class="bi bi-people"></i>
+                                    </span>
+                                    <a href="#" class="btn btn-sm btn-outline-accent">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card border-0 h-100">
+                            <div class="position-relative">
+                                <img src="https://source.unsplash.com/random/600x400?market" class="card-img-top rounded-top" alt="Tour" style="height: 150px; object-fit: cover;">
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-accent text-dark">
+                                    Jun 17-19
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Cultural Markets</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt"></i> Mogadishu
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary">
+                                        6 <i class="bi bi-people"></i>
+                                    </span>
+                                    <a href="#" class="btn btn-sm btn-outline-accent">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card border-0 h-100">
+                            <div class="position-relative">
+                                <img src="https://source.unsplash.com/random/600x400?mountain" class="card-img-top rounded-top" alt="Tour" style="height: 150px; object-fit: cover;">
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-accent text-dark">
+                                    Jun 18-20
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Mountain Trek</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt"></i> Golis Mountains
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary">
+                                        10 <i class="bi bi-people"></i>
+                                    </span>
+                                    <a href="#" class="btn btn-sm btn-outline-accent">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(revenueCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Revenue ($)',
+                data: [18500, 22400, 19800, 24500, 27800, 31200, 29500, 32600, 35400, 38200, 41000, 28795],
+                borderColor: '#3ab795',
+                backgroundColor: 'rgba(58, 183, 149, 0.1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#3ab795',
+                pointBorderColor: '#fff',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            }
+        }
+    });
+
+    // Booking Status Chart
+    const bookingStatusCtx = document.getElementById('bookingStatusChart').getContext('2d');
+    const bookingStatusChart = new Chart(bookingStatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Confirmed', 'Pending', 'Cancelled'],
+            datasets: [{
+                data: [68, 24, 8],
+                backgroundColor: [
+                    '#3ab795',
+                    '#ffc107',
+                    '#dc3545'
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '75%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.raw + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Dropdown functionality
+    document.querySelectorAll('.dropdown-item[data-period]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const period = this.getAttribute('data-period');
+            const dropdownToggle = this.closest('.dropdown').querySelector('.dropdown-toggle');
+            
+            // Update button text
+            if (period === 'today') {
+                dropdownToggle.textContent = 'Today';
+            } else if (period === '7days') {
+                dropdownToggle.textContent = 'Next 7 Days';
+            } else if (period === '30days') {
+                dropdownToggle.textContent = 'Next 30 Days';
+            } else if (period === 'weekly') {
+                dropdownToggle.textContent = 'Weekly';
+            } else if (period === 'monthly') {
+                dropdownToggle.textContent = 'Monthly';
+            } else if (period === 'quarterly') {
+                dropdownToggle.textContent = 'Quarterly';
+            }
+            
+            // Here you would typically make an AJAX call to update the data
+            // For this example, we'll just log the selected period
+            console.log('Period changed to:', period);
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Tour Packages - STMS{% endblock %}
+{% block page_title %}Tour Packages{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item active" aria-current="page">Tour Packages</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Tour Packages</h5>
+        {% if request.user.is_staff or request.user.user_type == 'OPERATOR' %}
+        <a href="{% url 'tms:package-create' %}" class="btn btn-sm btn-accent">
+            <i class="bi bi-plus-lg"></i> Add Package
+        </a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="get" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search packages..." 
+                               value="{{ search_query }}">
+                        <button class="btn btn-accent" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select class="form-select" onchange="window.location.href=this.value">
+                            <option value="?">All Types</option>
+                            {% for value, label in package_types.items %}
+                            <option value="?type={{ value }}" {% if selected_type == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" onchange="window.location.href=this.value">
+                            <option value="?">All Destinations</option>
+                            {% for dest in destinations %}
+                            <option value="?destination={{ dest.id }}" {% if selected_destination == dest.id|stringformat:"s" %}selected{% endif %}>
+                                {{ dest.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for package in packages %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'tms:package-detail' pk=package.pk %}">
+                                {{ package.name }}
+                            </a>
+                        </td>
+                        <td>{{ package.get_package_type_display }}</td>
+                        <td>{{ package.duration_days }} days</td>
+                        <td>${{ package.current_price|floatformat:2 }}</td>
+                        <td>
+                            <span class="badge {% if package.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                {% if package.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'tms:package-detail' pk=package.pk %}" class="btn btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if request.user.is_staff or package.created_by == request.user %}
+                                <a href="{% url 'tms:package-update' pk=package.pk %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'tms:package-delete' pk=package.pk %}" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No tour packages found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <nav aria-label="Package pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_destination %}&destination={{ selected_destination }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_destination %}&destination={{ selected_destination }}{% endif %}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_destination %}&destination={{ selected_destination }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

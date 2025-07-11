@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit {{ form.instance }}{% else %}Add New Vehicle{% endif %} - STMS
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:vehicle-list' %}">Vehicles</a></li>
+    <li class="breadcrumb-item active">{% if form.instance.pk %}Edit{% else %}Add{% endif %}</li>
+{% endblock %}
+
+{% block page_title %}
+    {% if form.instance.pk %}Edit Vehicle{% else %}Add New Vehicle{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.make.id_for_label }}" class="form-label">Make</label>
+                        {{ form.make }}
+                        {% if form.make.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.make.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.model.id_for_label }}" class="form-label">Model</label>
+                        {{ form.model }}
+                        {% if form.model.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.model.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.year.id_for_label }}" class="form-label">Year</label>
+                        {{ form.year }}
+                        {% if form.year.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.year.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.vehicle_type.id_for_label }}" class="form-label">Type</label>
+                        {{ form.vehicle_type }}
+                        {% if form.vehicle_type.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.vehicle_type.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.capacity.id_for_label }}" class="form-label">Capacity</label>
+                        {{ form.capacity }}
+                        {% if form.capacity.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.capacity.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.license_plate.id_for_label }}" class="form-label">License Plate</label>
+                        {{ form.license_plate }}
+                        {% if form.license_plate.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.license_plate.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="{{ form.daily_rate.id_for_label }}" class="form-label">Daily Rate ($)</label>
+                        {{ form.daily_rate }}
+                        {% if form.daily_rate.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.daily_rate.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <div class="form-check form-switch">
+                    {{ form.is_available }}
+                    <label class="form-check-label" for="{{ form.is_available.id_for_label }}">Available for booking</label>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="{{ form.features.id_for_label }}" class="form-label">Features</label>
+                {{ form.features }}
+                {% if form.features.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.features.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="{{ form.image.id_for_label }}" class="form-label">Vehicle Image</label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.image.errors.as_text }}
+                </div>
+                {% endif %}
+                
+                {% if form.instance.image %}
+                <div class="mt-2">
+                    <img src="{{ form.instance.image.url }}" alt="Current image" class="img-thumbnail" width="150">
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% if form.instance.pk %}{% url 'tms:vehicle-detail' form.instance.pk %}{% else %}{% url 'tms:vehicle-list' %}{% endif %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

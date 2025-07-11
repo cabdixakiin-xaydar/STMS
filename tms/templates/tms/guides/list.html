@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Tour Guides - STMS{% endblock %}
+{% block page_title %}Tour Guides{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">Tour Guides</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Available Tour Guides</h5>
+        <div class="d-flex">
+            {% if request.user.is_staff or request.user.user_type == 'OPERATOR' %}
+            <a href="{% url 'tms:guide-create' %}" class="btn btn-accent me-2">
+                <i class="bi bi-plus-circle"></i> Add Tour Guide
+            </a>
+            {% endif %}
+            <form method="get" class="d-flex">
+                <input type="text" name="specialization" class="form-control me-2" placeholder="Filter by specialization" 
+                       value="{{ request.GET.specialization }}">
+                <input type="text" name="language" class="form-control me-2" placeholder="Filter by language" 
+                       value="{{ request.GET.language }}">
+                <button type="submit" class="btn btn-accent">
+                    <i class="bi bi-funnel"></i> Filter
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Specialization</th>
+                        <th>Languages</th>
+                        <th>Experience</th>
+                        <th>Hourly Rate</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for guide in guides %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'tms:guide-detail' guide.pk %}">
+                                {{ guide.user.get_full_name }}
+                            </a>
+                        </td>
+                        <td>{{ guide.specialization }}</td>
+                        <td>{{ guide.languages }}</td>
+                        <td>{{ guide.years_of_experience }} years</td>
+                        <td>${{ guide.hourly_rate }}</td>
+                        <td>
+                            <span class="badge bg-accent text-dark">
+                                {{ guide.rating|default:"0.0" }}/5.0
+                            </span>
+                        </td>
+                        <td>
+                            {% if guide.is_available %}
+                            <span class="badge bg-success">Available</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Unavailable</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <a href="{% url 'tms:guide-detail' guide.pk %}" class="btn btn-sm btn-outline-accent me-1">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if request.user.is_staff or request.user.user_type == 'OPERATOR' %}
+                                <a href="{% url 'tms:guide-update' guide.pk %}" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'tms:guide-delete' guide.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No tour guides found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.specialization %}&specialization={{ request.GET.specialization }}{% endif %}{% if request.GET.language %}&language={{ request.GET.language }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.specialization %}&specialization={{ request.GET.specialization }}{% endif %}{% if request.GET.language %}&language={{ request.GET.language }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.specialization %}&specialization={{ request.GET.specialization }}{% endif %}{% if request.GET.language %}&language={{ request.GET.language }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

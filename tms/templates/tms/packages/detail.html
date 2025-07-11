@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.name }} - STMS{% endblock %}
+{% block page_title %}Tour Package Details{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:package-list' %}">Tour Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Package Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Package Name:</div>
+                    <div class="col-md-8">{{ object.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Package Type:</div>
+                    <div class="col-md-8">{{ object.get_package_type_display }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Duration:</div>
+                    <div class="col-md-8">{{ object.duration_days }} days</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Base Price:</div>
+                    <div class="col-md-8">${{ object.price_usd }}</div>
+                </div>
+                {% if object.discount_percentage > 0 %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Discount:</div>
+                    <div class="col-md-8">{{ object.discount_percentage }}%</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Current Price:</div>
+                    <div class="col-md-8">${{ object.current_price }}</div>
+                </div>
+                {% endif %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Status:</div>
+                    <div class="col-md-8">
+                        <span class="badge {% if object.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                            {% if object.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Description:</div>
+                    <div class="col-md-8">{{ object.description }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Package Details</h5>
+            </div>
+            <div class="card-body">
+                {% if object.highlights %}
+                <div class="mb-4">
+                    <h6>Highlights</h6>
+                    <p>{{ object.highlights }}</p>
+                </div>
+                {% endif %}
+                
+                {% if object.inclusions %}
+                <div class="mb-4">
+                    <h6>What's Included</h6>
+                    <p>{{ object.inclusions }}</p>
+                </div>
+                {% endif %}
+                
+                {% if object.exclusions %}
+                <div class="mb-4">
+                    <h6>What's Not Included</h6>
+                    <p>{{ object.exclusions }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Destinations</h5>
+            </div>
+            <div class="card-body">
+                {% if object.destinations.all %}
+                <ul class="list-group list-group-flush">
+                    {% for destination in object.destinations.all %}
+                    <li class="list-group-item">
+                        <a href="{% url 'tms:destination-detail' pk=destination.pk %}">
+                            {{ destination.name }}
+                        </a>
+                        <span class="badge bg-info float-end">
+                            {{ destination.location }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">No destinations added to this package</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'tms:booking-create' %}?package={{ object.pk }}" class="btn btn-accent">
+                        <i class="bi bi-calendar-plus"></i> Book This Package
+                    </a>
+                    
+                    {% if request.user.is_staff or object.created_by == request.user %}
+                    <a href="{% url 'tms:package-update' pk=object.pk %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-pencil"></i> Edit Package
+                    </a>
+                    <a href="{% url 'tms:package-delete' pk=object.pk %}" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Delete Package
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'tms:package-list' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Back to Packages
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

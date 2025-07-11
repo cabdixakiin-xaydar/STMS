@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{% trans "Review Details" %}</h4>
+                        {% if can_edit %}
+                            <a href="{% url 'review-update' pk=review.pk %}" class="btn btn-sm btn-light">
+                                {% trans "Edit" %}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="text-primary">{{ review.booking }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="display-6 text-warning">{{ review.get_rating_stars }}</span>
+                                <span class="ms-2 fs-5">({{ review.get_rating_display }})</span>
+                            </div>
+                            {% if not review.is_approved %}
+                                <span class="badge bg-warning text-dark">{% trans "Pending Approval" %}</span>
+                            {% endif %}
+                        </div>
+                        <div class="card bg-light p-3 mb-3">
+                            <p class="lead mb-0">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted">
+                                    {% trans "Reviewed by:" %} {{ review.reviewer.get_full_name|default:review.reviewer.username }}
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    {% trans "Date:" %} {{ review.created_at|date:"F j, Y" }}
+                                </small>
+                            </div>
+                            <a href="{% url 'booking-detail' pk=review.booking.pk %}" class="btn btn-outline-primary">
+                                {% trans "View Booking" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

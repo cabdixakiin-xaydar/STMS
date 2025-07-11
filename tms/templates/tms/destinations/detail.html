@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}{{ destination.name }} - STMS{% endblock %}
+{% block page_title %}{{ destination.name }}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:destination-list' %}">Destinations</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ destination.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Destination Overview</h5>
+                <div>
+                    {% if request.user == destination.created_by or request.user.is_staff %}
+                    <a href="{% url 'tms:destination-update' destination.pk %}" class="btn btn-sm btn-outline-primary me-1">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="{% url 'tms:destination-delete' destination.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h6 class="text-muted mb-3">Location</h6>
+                    <p class="mb-0">
+                        <i class="bi bi-geo-alt-fill text-primary"></i> {{ destination.location }}
+                    </p>
+                    {% if destination.latitude and destination.longitude %}
+                    <div class="mt-3" style="height: 300px; background-color: #f8f9fa;" id="map"></div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-muted mb-3">Description</h6>
+                    <p>{{ destination.description|linebreaks }}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-light rounded p-2 me-3">
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Featured</h6>
+                                <p class="text-muted small mb-0">
+                                    {% if destination.is_featured %}Yes{% else %}No{% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-light rounded p-2 me-3">
+                                <i class="bi bi-calendar-check text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Today's Bookings</h6>
+                                <p class="text-muted small mb-0">{{ today_bookings }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if packages %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent">
+                <h5 class="mb-0">Tour Packages</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Duration</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for package in packages %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'tms:package-detail' package.pk %}">{{ package.name }}</a>
+                                </td>
+                                <td>{{ package.duration_days }} days</td>
+                                <td>${{ package.current_price }}</td>
+                                <td>
+                                    <span class="badge {% if package.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {% if package.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'tms:package-detail' package.pk %}" class="btn btn-sm btn-outline-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gallery</h5>
+                {% if request.user == destination.created_by or request.user.is_staff %}
+                <a href="{% url 'tms:destination-add-image' destination.pk %}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-plus"></i> Add Image
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if featured_images or all_images %}
+                <div class="row g-2">
+                    {% for image in featured_images %}
+                    <div class="col-6">
+                        <div class="position-relative">
+                            <img src="{{ image.image.url }}" class="img-fluid rounded" alt="{{ image.caption|default:destination.name }}">
+                            <span class="position-absolute top-0 start-0 m-1 badge bg-success">Featured</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% for image in all_images %}
+                    {% if not image.is_featured %}
+                    <div class="col-6">
+                        <img src="{{ image.image.url }}" class="img-fluid rounded" alt="{{ image.caption|default:destination.name }}">
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                    <p class="text-muted mt-2 mb-0">No images available</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent">
+                <h5 class="mb-0">Destination Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6 class="text-muted mb-2">Created By</h6>
+                    <div class="d-flex align-items-center">
+                        {% if destination.created_by.profile_picture %}
+                        <img src="{{ destination.created_by.profile_picture.url }}" class="rounded-circle me-2" width="32" height="32" alt="{{ destination.created_by.get_full_name }}">
+                        {% else %}
+                        <div class="avatar-placeholder rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                            {{ destination.created_by.first_name|first|upper }}{{ destination.created_by.last_name|first|upper }}
+                        </div>
+                        {% endif %}
+                        <span>{{ destination.created_by.get_full_name }}</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6 class="text-muted mb-2">Created On</h6>
+                    <p class="mb-0">{{ destination.created_at|date:"M d, Y" }}</p>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-2">Last Updated</h6>
+                    <p class="mb-0">{{ destination.updated_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if destination.latitude and destination.longitude %}
+<script>
+    // Initialize map
+    function initMap() {
+        const location = { lat: {{ destination.latitude }}, lng: {{ destination.longitude }} };
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: location,
+            styles: [
+                // Custom map styles can be added here
+            ]
+        });
+        new google.maps.Marker({
+            position: location,
+            map: map,
+            title: "{{ destination.name }}"
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}{{ vehicle }} Availability - STMS{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:vehicle-list' %}">Vehicles</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'tms:vehicle-detail' vehicle.pk %}">{{ vehicle }}</a></li>
+    <li class="breadcrumb-item active">Availability</li>
+{% endblock %}
+
+{% block page_title %}{{ vehicle }} Availability{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Check Vehicle Availability</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Check Dates</h5>
+                        <form id="availabilityForm">
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="endDate" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Check Availability
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Availability Status</h5>
+                        <div id="availabilityResult" class="text-center py-4">
+                            <div class="text-muted">
+                                <i class="bi bi-calendar" style="font-size: 2rem;"></i>
+                                <p class="mt-2">Select dates to check availability</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Upcoming Bookings</h5>
+            </div>
+            <div class="card-body">
+                {% if upcoming_bookings %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Booking Reference</th>
+                                <th>Dates</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in upcoming_bookings %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'tms:booking-detail' booking.pk %}">{{ booking.booking_reference }}</a>
+                                </td>
+                                <td>
+                                    {{ booking.start_date|date:"M d, Y" }} - {{ booking.end_date|date:"M d, Y" }}
+                                </td>
+                                <td>{{ booking.customer.get_full_name }}</td>
+                                <td>
+                                    <span class="badge bg-{% if booking.status == 'CONFIRMED' %}success{% elif booking.status == 'PENDING' %}warning{% else %}secondary{% endif %}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-3 text-muted">
+                    <i class="bi bi-calendar-x" style="font-size: 2rem;"></i>
+                    <p class="mt-2">No upcoming bookings for this vehicle</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const availabilityForm = document.getElementById('availabilityForm');
+    
+    availabilityForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const resultDiv = document.getElementById('availabilityResult');
+        
+        if (!startDate || !endDate) {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i> Please select both start and end dates
+                </div>
+            `;
+            return;
+        }
+        
+        // Show loading state
+        resultDiv.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Checking availability...</p>
+            </div>
+        `;
+        
+        // Simulate API call (in a real app, you would make an AJAX request to your backend)
+        setTimeout(function() {
+            // This is a mock response - replace with actual API call
+            const isAvailable = Math.random() > 0.3; // 70% chance of being available
+            
+            if (isAvailable) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i> 
+                        <strong>Available</strong> from ${startDate} to ${endDate}
+                        <p class="mt-2 mb-0">Daily rate: ${{ vehicle.daily_rate }}</p>
+                    </div>
+                    <a href="{% url 'tms:booking-create' %}?vehicle_id={{ vehicle.pk }}&start_date=${startDate}&end_date=${endDate}" 
+                       class="btn btn-success mt-2">
+                        <i class="bi bi-calendar-plus"></i> Book Now
+                    </a>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle"></i> 
+                        <strong>Not Available</strong> from ${startDate} to ${endDate}
+                        <p class="mt-2 mb-0">This vehicle is already booked for the selected dates</p>
+                    </div>
+                `;
+            }
+        }, 1000);
+    });
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDate').min = today;
+    document.getElementById('endDate').min = today;
+    
+    // Update end date min when start date changes
+    document.getElementById('startDate').addEventListener('change', function() {
+        document.getElementById('endDate').min = this.value;
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% if form.instance.pk %}{% trans "Update Booking" %}{% else %}{% trans "Create Booking" %}{% endif %}{% endblock %}
+{% block page_title %}{% if form.instance.pk %}{% trans "Update Booking" %}{% else %}{% trans "Create Booking" %}{% endif %}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:booking-list' %}">{% trans "Bookings" %}</a></li>
+<li class="breadcrumb-item active">{% if form.instance.pk %}{% trans "Update" %}{% else %}{% trans "Create" %}{% endif %}</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Tour Package" %}</label>
+                    {{ form.tour_package }}
+                    {% if form.tour_package.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.tour_package.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Accommodation" %}</label>
+                    {{ form.accommodation }}
+                    {% if form.accommodation.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.accommodation.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Vehicle" %}</label>
+                    {{ form.vehicle }}
+                    {% if form.vehicle.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.vehicle.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Guide" %}</label>
+                    {{ form.guide }}
+                    {% if form.guide.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.guide.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Start Date" %}</label>
+                    {{ form.start_date }}
+                    {% if form.start_date.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.start_date.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "End Date" %}</label>
+                    {{ form.end_date }}
+                    {% if form.end_date.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.end_date.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Number of People" %}</label>
+                    {{ form.number_of_people }}
+                    {% if form.number_of_people.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.number_of_people.errors.as_text }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{% trans "Special Requests" %}</label>
+                {{ form.special_requests }}
+                {% if form.special_requests.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.special_requests.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'tms:booking-list' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> {% trans "Back" %}
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> {% if form.instance.pk %}{% trans "Update" %}{% else %}{% trans "Create" %}{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Calculate total amount when form fields change
+    function calculateTotal() {
+        // This would be implemented with AJAX to calculate the total
+        console.log("Calculating total...");
+    }
+    
+    // Add event listeners to relevant fields
+    const fields = ['tour_package', 'accommodation', 'vehicle', 'guide', 'start_date', 'end_date', 'number_of_people'];
+    fields.forEach(fieldId => {
+        document.getElementById(`id_${fieldId}`).addEventListener('change', calculateTotal);
+    });
+});
+</script>
+{% endblock %}

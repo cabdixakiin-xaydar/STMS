@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ object.name }} - STMS{% endblock %}
+{% block page_title %}Confirm Package Deletion{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:package-list' %}">Tour Packages</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'tms:package-detail' pk=object.pk %}">{{ object.name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Delete</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Confirm Deletion</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                <h5 class="alert-heading">Warning!</h5>
+                <p>You are about to delete the tour package <strong>"{{ object.name }}"</strong>. This action cannot be undone.</p>
+                <hr>
+                <p class="mb-0">Are you sure you want to proceed?</p>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'tms:package-detail' pk=object.pk %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Confirm Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

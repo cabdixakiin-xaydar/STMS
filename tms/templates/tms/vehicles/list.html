@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Vehicles List - STMS{% endblock %}
+
+{% block page_title %}Vehicles{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item active">Vehicles</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Vehicles</h5>
+        <div class="d-flex gap-2">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
+                    <i class="bi bi-funnel"></i> Filter
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><h6 class="dropdown-header">Vehicle Type</h6></li>
+                    <li><a class="dropdown-item" href="?type=">All Types</a></li>
+                    {% for type in vehicle_types %}
+                    <li><a class="dropdown-item" href="?type={{ type.0 }}">{{ type.1 }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if request.user.is_staff or request.user.user_type in 'OPERATOR,MINISTRY' %}
+            <a href="{% url 'tms:vehicle-create' %}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus"></i> Add Vehicle
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Details</th>
+                        <th>Type</th>
+                        <th>Capacity</th>
+                        <th>Daily Rate</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehicle in vehicles %}
+                    <tr>
+                        <td>
+                            {% if vehicle.image %}
+                            <img src="{{ vehicle.image.url }}" alt="{{ vehicle.make }} {{ vehicle.model }}" class="rounded" width="80">
+                            {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 80px; height: 60px;">
+                                <i class="bi bi-car-front text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</strong><br>
+                            <small class="text-muted">{{ vehicle.license_plate }}</small>
+                        </td>
+                        <td>{{ vehicle.get_vehicle_type_display }}</td>
+                        <td>{{ vehicle.capacity }} people</td>
+                        <td>${{ vehicle.daily_rate }}</td>
+                        <td>
+                            {% if vehicle.is_available %}
+                            <span class="badge bg-success">Available</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Unavailable</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'tms:vehicle-detail' vehicle.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if request.user.is_staff or request.user.user_type in 'OPERATOR,MINISTRY' %}
+                                <a href="{% url 'tms:vehicle-update' vehicle.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4">No vehicles found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

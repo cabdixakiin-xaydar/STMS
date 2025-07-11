@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ accommodation.name }} - STMS{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:accommodation-list' %}">Accommodations</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ accommodation.name }}</li>
+{% endblock %}
+
+{% block page_title %}{{ accommodation.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Accommodation Details</h5>
+                <span class="badge bg-{% if accommodation.is_active %}success{% else %}secondary{% endif %}">
+                    {% if accommodation.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <h6>Basic Information</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Type:</span>
+                                    <span>{{ accommodation.get_accommodation_type_display }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Location:</span>
+                                    <span>
+                                        <a href="{% url 'tms:destination-detail' accommodation.destination.pk %}">
+                                            {{ accommodation.destination.name }}
+                                        </a>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Star Rating:</span>
+                                    <span>
+                                        {% with ''|center:accommodation.star_rating as range %}
+                                            {% for _ in range %}
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Price Range:</span>
+                                    <span>${{ accommodation.price_range_min }} - ${{ accommodation.price_range_max }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <h6>Contact Information</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Phone:</span>
+                                    <span>{{ accommodation.contact_phone }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Email:</span>
+                                    <span>
+                                        {% if accommodation.contact_email %}
+                                        <a href="mailto:{{ accommodation.contact_email }}">
+                                            {{ accommodation.contact_email }}
+                                        </a>
+                                        {% else %}-{% endif %}
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Website:</span>
+                                    <span>
+                                        {% if accommodation.website %}
+                                        <a href="{{ accommodation.website }}" target="_blank">
+                                            Visit Website <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                        {% else %}-{% endif %}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Address</h6>
+                    <div class="p-3 bg-light rounded">
+                        {{ accommodation.address|linebreaks }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Amenities</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for amenity in accommodation.amenities_list %}
+                        <span class="badge bg-primary">{{ amenity }}</span>
+                        {% empty %}
+                        <span class="text-muted">No amenities listed</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Description</h6>
+                    <div class="p-3 bg-light rounded">
+                        {{ accommodation.description|default:"No description provided"|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end gap-2">
+                <a href="{% url 'tms:accommodation-update' accommodation.pk %}" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a href="{% url 'tms:accommodation-availability' accommodation.pk %}" class="btn btn-info">
+                    <i class="bi bi-calendar-check"></i> Check Availability
+                </a>
+                <a href="{% url 'tms:accommodation-room-types' accommodation.pk %}" class="btn btn-secondary">
+                    <i class="bi bi-door-open"></i> Room Types
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Images</h5>
+                <a href="{% url 'tms:accommodation-add-image' accommodation.pk %}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus"></i> Add Image
+                </a>
+            </div>
+            <div class="card-body">
+                {% if accommodation.images.all %}
+                <div class="gallery-container">
+                    <div class="row g-2">
+                        {% for image in accommodation.images.all %}
+                        <div class="col-6">
+                            <div class="position-relative">
+                                <a href="{{ image.image.url }}" data-fancybox="gallery" 
+                                   data-caption="{{ image.caption|default:accommodation.name }}">
+                                    <img src="{{ image.image.url }}" class="img-fluid rounded gallery-item" 
+                                         alt="{{ image.caption|default:accommodation.name }}">
+                                </a>
+                                {% if image.is_featured %}
+                                <span class="position-absolute top-0 start-0 m-1 badge bg-success">
+                                    <i class="bi bi-star-fill"></i> Featured
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-muted">{{ image.caption|truncatechars:15 }}</small>
+                                <div>
+                                    <a href="{% url 'tms:accommodation-set-featured-image' accommodation.pk image.pk %}" 
+                                       class="text-decoration-none" title="Set as featured">
+                                        <i class="bi bi-star{% if image.is_featured %}-fill text-warning{% endif %}"></i>
+                                    </a>
+                                    <a href="{% url 'tms:accommodation-delete-image' accommodation.pk image.pk %}" 
+                                       class="text-decoration-none ms-2 text-danger" title="Delete image">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                    <p class="text-muted mt-2">No images available</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Stats</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Room Types</span>
+                        <span class="badge bg-primary rounded-pill">
+                            {{ accommodation.room_types.count }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Active Bookings</span>
+                        <span class="badge bg-success rounded-pill">
+                            {{ accommodation.bookings.active.count }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Total Bookings</span>
+                        <span class="badge bg-info rounded-pill">
+                            {{ accommodation.bookings.count }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Fancybox for image gallery -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script>
+    Fancybox.bind("[data-fancybox]", {
+        Thumbs: false,
+        Toolbar: {
+            display: {
+                left: [],
+                middle: [],
+                right: ["close"],
+            },
+        },
+    });
+</script>
+{% endblock %}

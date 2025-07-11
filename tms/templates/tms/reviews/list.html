@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>{% trans "Customer Reviews" %}</h2>
+    {% if user.is_staff %}
+        {% url 'review-management' as manage_url %}
+        {% if manage_url %}
+            <a href="{{ manage_url }}" class="btn btn-sm btn-outline-secondary">
+                {% trans "Manage Reviews" %}
+            </a>
+        {% endif %}
+    {% endif %}
+</div>
+    
+    {% if reviews %}
+        <div class="row">
+            {% for review in reviews %}
+                <div cl ss="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.booking }}</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-warning fs-5">{{ review.get_rating_stars }}</span>
+                                <small class="text-muted">{{ review.created_at|date:"F j, Y" }}</small>
+                            </div>
+                            <p class="card-text">{{ review.comment|truncatewords:30 }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    {% trans "By" %} {{ review.reviewer.get_full_name|default:review.reviewer.username }}
+                                </small>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            {% trans "No reviews available yet." %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Guide Profile</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ user.profile_picture.url|default:'/static/images/default-profile.png' }}" 
+                         class="rounded-circle mb-3" 
+                         width="120" 
+                         height="120"
+                         alt="Profile Picture">
+                    <h4>{{ user.get_full_name }}</h4>
+                    <p class="text-muted">Tour Guide</p>
+                    
+                    <div class="mb-3">
+                        {% for i in "12345" %}
+                            {% if i <= user.guide_profile.average_rating %}
+                                <i class="fas fa-star text-warning"></i>
+                            {% else %}
+                                <i class="far fa-star text-warning"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>({{ user.guide_profile.review_count }} reviews)</span>
+                    </div>
+                    
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'guide_profile' %}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user me-2"></i>Edit Profile
+                        </a>
+                        <a href="{% url 'guide_schedule' %}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-calendar-alt me-2"></i>My Schedule
+                        </a>
+                        <a href="{% url 'guide_bookings' %}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-bookmark me-2"></i>My Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Availability</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="availabilityToggle" 
+                               {% if user.guide_profile.is_available %}checked{% endif %}>
+                        <label class="form-check-label" for="availabilityToggle">
+                            Currently Available
+                        </label>
+                    </div>
+                    <p class="small text-muted">Toggle your availability status to accept new bookings</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Upcoming Bookings</h5>
+                        <a href="{% url 'guide_bookings' %}" class="btn btn-sm btn-light">
+                            View All <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_bookings %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tour</th>
+                                    <th>Date</th>
+                                    <th>Tourists</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in upcoming_bookings %}
+                                <tr>
+                                    <td>{{ booking.tour.name }}</td>
+                                    <td>{{ booking.tour_date|date:"M d, Y" }}</td>
+                                    <td>{{ booking.tourists.count }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ booking.get_status_class }}">
+                                            {{ booking.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'booking_detail' booking.id %}" class="btn btn-sm btn-outline-primary">
+                                            Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        You don't have any upcoming bookings. Update your availability to get more bookings.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Reviews</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_reviews %}
+                    <div class="row">
+                        {% for review in recent_reviews %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <h6>{{ review.tourist.get_full_name }}</h6>
+                                        <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        {% for i in "12345" %}
+                                            {% if i <= review.rating %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <i class="far fa-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <p class="card-text">{{ review.comment|truncatewords:20 }}</p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{% url 'review_detail' review.id %}" class="btn btn-sm btn-outline-primary">
+                                        View Full Review
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        You don't have any reviews yet. Provide excellent service to get reviews from tourists.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('availabilityToggle').addEventListener('change', function() {
+    fetch("{% url 'update_availability' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            is_available: this.checked
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const toast = new bootstrap.Toast(document.getElementById('availabilityToast'));
+            toast.show();
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">My Profile</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ user.profile_picture.url|default:'/static/images/default-profile.png' }}" 
+                         class="rounded-circle mb-3" 
+                         width="120" 
+                         height="120"
+                         alt="Profile Picture">
+                    <h4>{{ user.get_full_name }}</h4>
+                    <p class="text-muted">Tourist</p>
+                    
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user me-2"></i>Edit Profile
+                        </a>
+                        <a href="{% url 'my_bookings' %}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-calendar-alt me-2"></i>My Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Available Tours</h5>
+                        <a href="{% url 'all_tours' %}" class="btn btn-sm btn-light">
+                            View All <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Sample tour cards - replace with actual data -->
+                        {% for tour in featured_tours %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <img src="{{ tour.image.url }}" class="card-img-top" alt="{{ tour.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ tour.name }}</h5>
+                                    <p class="card-text">{{ tour.short_description }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">{{ tour.duration }} days</span>
+                                        <strong>${{ tour.price }}</strong>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{% url 'tour_detail' tour.id %}" class="btn btn-sm btn-outline-primary w-100">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recommended Guides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Sample guide cards - replace with actual data -->
+                        {% for guide in recommended_guides %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <img src="{{ guide.user.profile_picture.url|default:'/static/images/default-profile.png' }}" 
+                                         class="rounded-circle mb-3" 
+                                         width="80" 
+                                         height="80"
+                                         alt="Guide Picture">
+                                    <h5>{{ guide.user.get_full_name }}</h5>
+                                    <p class="text-muted">{{ guide.specialization }}</p>
+                                    <div class="mb-2">
+                                        {% for i in "12345" %}
+                                            {% if i <= guide.rating %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <i class="far fa-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="ms-1">({{ guide.review_count }})</span>
+                                    </div>
+                                    <p class="small">{{ guide.user.guide_profile.biography|truncatewords:15 }}</p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{% url 'guide_detail' guide.user.id %}" class="btn btn-sm btn-outline-primary w-100">
+                                        View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

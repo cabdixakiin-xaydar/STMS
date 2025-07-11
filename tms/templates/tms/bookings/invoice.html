@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Invoice" %} #{{ booking.booking_reference }}{% endblock %}
+{% block page_title %}{% trans "Booking Invoice" %}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:booking-list' %}">{% trans "Bookings" %}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'tms:booking-detail' booking.pk %}">#{{ booking.booking_reference }}</a></li>
+<li class="breadcrumb-item active">{% trans "Invoice" %}</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="invoice-header mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>STMS</h2>
+                    <p class="mb-0">Somali Tourism Management System</p>
+                    <p class="mb-0">Mogadishu, Somalia</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h3>{% trans "INVOICE" %}</h3>
+                    <p class="mb-0">#{{ booking.booking_reference }}</p>
+                    <p class="mb-0">{{ booking.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>{% trans "Bill To" %}:</h5>
+                <p class="mb-0"><strong>{{ booking.customer.get_full_name }}</strong></p>
+                <p class="mb-0">{{ booking.customer.email }}</p>
+                <p class="mb-0">{{ booking.customer.phone_number }}</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <h5>{% trans "Booking Details" %}:</h5>
+                <p class="mb-0"><strong>Status:</strong> {{ booking.get_status_display }}</p>
+                <p class="mb-0"><strong>Dates:</strong> {{ booking.start_date|date:"M d, Y" }} - {{ booking.end_date|date:"M d, Y" }}</p>
+                <p class="mb-0"><strong>People:</strong> {{ booking.number_of_people }}</p>
+            </div>
+        </div>
+
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{% trans "Item" %}</th>
+                        <th>{% trans "Description" %}</th>
+                        <th class="text-end">{% trans "Unit Price" %}</th>
+                        <th class="text-end">{% trans "Quantity" %}</th>
+                        <th class="text-end">{% trans "Amount" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if booking.tour_package %}
+                    <tr>
+                        <td>{% trans "Tour Package" %}</td>
+                        <td>{{ booking.tour_package.name }} ({{ booking.tour_package.duration_days }} days)</td>
+                        <td class="text-end">${{ booking.tour_package.current_price }}</td>
+                        <td class="text-end">{{ booking.number_of_people }}</td>
+                        <td class="text-end">${{ booking.tour_package.current_price|multiply:booking.number_of_people }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                    {% if booking.accommodation %}
+                    <tr>
+                        <td>{% trans "Accommodation" %}</td>
+                        <td>{{ booking.accommodation.name }} ({{ booking.accommodation.accommodation_type }})</td>
+                        <td class="text-end">${{ booking.accommodation.price_range_max }}</td>
+                        <td class="text-end">{{ booking.number_of_people }}</td>
+                        <td class="text-end">${{ booking.accommodation.price_range_max|multiply:booking.number_of_people }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                    {% if booking.vehicle %}
+                    <tr>
+                        <td>{% trans "Vehicle Rental" %}</td>
+                        <td>{{ booking.vehicle.make }} {{ booking.vehicle.model }} ({{ booking.vehicle.vehicle_type }})</td>
+                        <td class="text-end">${{ booking.vehicle.daily_rate }}</td>
+                        <td class="text-end">{{ booking.duration_days }}</td>
+                        <td class="text-end">${{ booking.vehicle.daily_rate|multiply:booking.duration_days }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                    {% if booking.guide %}
+                    <tr>
+                        <td>{% trans "Tour Guide" %}</td>
+                        <td>{{ booking.guide.user.get_full_name }} ({{ booking.guide.specialization }})</td>
+                        <td class="text-end">${{ booking.guide.hourly_rate|multiply:8 }}</td>
+                        <td class="text-end">{{ booking.duration_days }}</td>
+                        <td class="text-end">${{ booking.guide.hourly_rate|multiply:8|multiply:booking.duration_days }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>{% trans "Subtotal" %}:</strong></td>
+                        <td class="text-end">${{ booking.total_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>{% trans "Amount Paid" %}:</strong></td>
+                        <td class="text-end">${{ booking.amount_paid }}</td>
+                    </tr>
+                    <tr class="table-active">
+                        <td colspan="4" class="text-end"><strong>{% trans "Balance Due" %}:</strong></td>
+                        <td class="text-end">${{ remaining_balance }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="mb-4">
+            <h5>{% trans "Payment Instructions" %}</h5>
+            <p>{% trans "Please make payments to:" %}</p>
+            <p><strong>Bank Name:</strong> Somali International Bank<br>
+            <strong>Account Name:</strong> Somali Tourism Management System<br>
+            <strong>Account Number:</strong> 1234567890<br>
+            <strong>Reference:</strong> {{ booking.booking_reference }}</p>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'tms:booking-detail' booking.pk %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> {% trans "Back to Booking" %}
+            </a>
+            <button onclick="window.print()" class="btn btn-primary">
+                <i class="bi bi-printer"></i> {% trans "Print Invoice" %}
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .card, .card * {
+        visibility: visible;
+    }
+    .card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none;
+    }
+    .btn {
+        display: none !important;
+    }
+}
+</style>
+{% endblock %}

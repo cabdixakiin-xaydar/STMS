@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Booking" %} #{{ booking.booking_reference }}{% endblock %}
+{% block page_title %}{% trans "Booking Details" %}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'tms:booking-list' %}">{% trans "Bookings" %}</a></li>
+<li class="breadcrumb-item active">#{{ booking.booking_reference }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>{% trans "Booking Information" %}</h5>
+                <div>
+                    <span class="badge 
+                        {% if booking.status == 'CONFIRMED' %}bg-success
+                        {% elif booking.status == 'PENDING' %}bg-warning text-dark
+                        {% elif booking.status == 'CANCELLED' %}bg-danger
+                        {% else %}bg-secondary{% endif %}">
+                        {{ booking.get_status_display }}
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Customer" %}</h6>
+                        <p>{{ booking.customer.get_full_name }}<br>
+                        {{ booking.customer.email }}<br>
+                        {{ booking.customer.phone_number }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Booking Reference" %}</h6>
+                        <p>{{ booking.booking_reference }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Dates" %}</h6>
+                        <p>{{ booking.start_date|date:"M d, Y" }} - {{ booking.end_date|date:"M d, Y" }}<br>
+                        ({{ booking.days_remaining }} {% trans "days remaining" %})</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Number of People" %}</h6>
+                        <p>{{ booking.number_of_people }}</p>
+                    </div>
+                </div>
+
+                {% if booking.tour_package %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Tour Package" %}</h6>
+                        <p>
+                            <a href="{% url 'tms:package-detail' booking.tour_package.pk %}">
+                                {{ booking.tour_package.name }}
+                            </a><br>
+                            {{ booking.tour_package.duration_days }} {% trans "days" %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Package Price" %}</h6>
+                        <p>${{ booking.tour_package.current_price }} {% trans "per person" %}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if booking.accommodation %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Accommodation" %}</h6>
+                        <p>
+                            <a href="{% url 'tms:accommodation-detail' booking.accommodation.pk %}">
+                                {{ booking.accommodation.name }}
+                            </a><br>
+                            {{ booking.accommodation.accommodation_type }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Price Range" %}</h6>
+                        <p>${{ booking.accommodation.price_range_min }} - ${{ booking.accommodation.price_range_max }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if booking.vehicle %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Vehicle" %}</h6>
+                        <p>
+                            <a href="{% url 'tms:vehicle-detail' booking.vehicle.pk %}">
+                                {{ booking.vehicle.make }} {{ booking.vehicle.model }}
+                            </a><br>
+                            {{ booking.vehicle.vehicle_type }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Daily Rate" %}</h6>
+                        <p>${{ booking.vehicle.daily_rate }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if booking.guide %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>{% trans "Tour Guide" %}</h6>
+                        <p>
+                            <a href="{% url 'tms:guide-detail' booking.guide.pk %}">
+                                {{ booking.guide.user.get_full_name }}
+                            </a><br>
+                            {{ booking.guide.specialization }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>{% trans "Hourly Rate" %}</h6>
+                        <p>${{ booking.guide.hourly_rate }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if booking.special_requests %}
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h6>{% trans "Special Requests" %}</h6>
+                        <p>{{ booking.special_requests }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>{% trans "Payment Summary" %}</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>{% trans "Total Amount" %}:</span>
+                    <strong>${{ booking.total_amount }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>{% trans "Amount Paid" %}:</span>
+                    <strong>${{ booking.amount_paid }}</strong>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>{% trans "Balance Due" %}:</span>
+                    <strong>${{ remaining_balance }}</strong>
+                </div>
+
+                {% if booking.status != 'CANCELLED' %}
+                <a href="{% url 'tms:booking-payment' booking.pk %}" class="btn btn-primary w-100 mb-3">
+                    {% trans "Process Payment" %}
+                </a>
+                {% endif %}
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'tms:booking-update' booking.pk %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-pencil"></i> {% trans "Edit" %}
+                    </a>
+                    <a href="{% url 'tms:booking-delete' booking.pk %}" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> {% trans "Cancel" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>{% trans "QR Code" %}</h5>
+            </div>
+            <div class="card-body text-center">
+                {% if booking.qr_code %}
+                <img src="{{ booking.qr_code.url }}" alt="QR Code" class="img-fluid" style="max-width: 200px;">
+                <p class="mt-2 text-muted">{% trans "Scan for booking details" %}</p>
+                <a href="{% url 'tms:qr-code' booking.pk %}" class="btn btn-sm btn-outline-primary mt-2">
+                    <i class="bi bi-download"></i> {% trans "Download" %}
+                </a>
+                {% else %}
+                <p class="text-muted">{% trans "QR code not generated" %}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>{% trans "Payment History" %}</h5>
+            </div>
+            <div class="card-body">
+                {% if booking.payments.all %}
+                <div class="list-group">
+                    {% for payment in booking.payments.all %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>${{ payment.amount }}</span>
+                            <span class="badge bg-secondary">{{ payment.get_payment_method_display }}</span>
+                        </div>
+                        <small class="text-muted">{{ payment.created_at|date:"M d, Y H:i" }}</small>
+                        <div class="mt-1">
+                            <small>{% trans "Transaction ID" %}: {{ payment.transaction_id }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">{% trans "No payments recorded" %}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

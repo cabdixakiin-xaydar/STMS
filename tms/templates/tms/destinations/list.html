@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tourism Destinations - STMS{% endblock %}
+
+{% block page_title %}Tourism Destinations{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item active">Destinations</li>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Destinations</h5>
+        {% if request.user.is_staff %}
+        <a href="{% url 'tms:destination-create' %}" class="btn btn-sm btn-accent">
+            <i class="bi bi-plus-circle"></i> Add Destination
+        </a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Featured</th>
+                        <th>Packages</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for destination in destinations %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'tms:destination-detail' pk=destination.pk %}">
+                                {{ destination.name }}
+                            </a>
+                        </td>
+                        <td>{{ destination.location }}</td>
+                        <td>
+                            {% if destination.is_featured %}
+                            <span class="badge bg-success">Featured</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Regular</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ destination.tourpackage_set.count }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'tms:destination-detail' pk=destination.pk %}" 
+                                   class="btn btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if request.user.is_staff %}
+                                <a href="{% url 'tms:destination-update' pk=destination.pk %}" 
+                                   class="btn btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'tms:destination-delete' pk=destination.pk %}" 
+                                   class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No destinations found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if is_paginated %}
+        <nav aria-label="Destination pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

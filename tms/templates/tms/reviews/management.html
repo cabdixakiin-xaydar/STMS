@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{% trans "Review Management" %}</h2>
+        <div>
+            <a href="{% url 'review-list' %}" class="btn btn-sm btn-outline-primary">
+                {% trans "Back to Public Reviews" %}
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{% trans "All Reviews" %}</h5>
+                <span class="badge bg-light text-dark">
+                    {{ reviews.paginator.count }} {% trans "total reviews" %}
+                </span>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans "ID" %}</th>
+                            <th>{% trans "Booking" %}</th>
+                            <th>{% trans "Rating" %}</th>
+                            <th>{% trans "Reviewer" %}</th>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for review in reviews %}
+                        <tr>
+                            <td>{{ review.id }}</td>
+                            <td>
+                                <a href="{% url 'booking-detail' pk=review.booking.pk %}">
+                                    #{{ review.booking.id }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="text-warning">{{ review.get_rating_stars }}</span>
+                                <small class="text-muted">({{ review.get_rating_display }})</small>
+                            </td>
+                            <td>
+                                {{ review.reviewer.get_full_name|default:review.reviewer.username }}
+                            </td>
+                            <td>{{ review.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+                            <td>
+                                {% if review.is_approved %}
+                                    <span class="badge bg-success">{% trans "Approved" %}</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">{% trans "Pending" %}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'review-detail' pk=review.pk %}" 
+                                       class="btn btn-outline-primary" 
+                                       title="{% trans 'View details' %}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'admin:tms_review_change' review.id %}" 
+                                       class="btn btn-outline-secondary" 
+                                       title="{% trans 'Edit in admin' %}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="post" action="{% url 'review-toggle-approve' review.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-{% if review.is_approved %}danger{% else %}success{% endif %}" 
+                                                title="{% if review.is_approved %}{% trans 'Unapprove' %}{% else %}{% trans 'Approve' %}{% endif %}">
+                                            <i class="fas fa-{% if review.is_approved %}times{% else %}check{% endif %}"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                {% trans "No reviews found" %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

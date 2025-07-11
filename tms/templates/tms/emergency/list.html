@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block page_title %}Emergency Contacts{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">Emergency Contacts</li>
+{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Emergency Contacts</h5>
+            {% if request.user.is_staff or request.user.user_type == 'MINISTRY' %}
+            <a href="{% url 'tms:emergency-create' %}" class="btn btn-sm btn-success">
+                <i class="bi bi-plus-circle"></i> Add New
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Location</th>
+                        <th>24/7</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-primary">
+                                {{ contact.get_contact_type_display }}
+                            </span>
+                        </td>
+                        <td>{{ contact.name }}</td>
+                        <td>
+                            <a href="tel:{{ contact.phone_number }}">{{ contact.phone_number }}</a>
+                        </td>
+                        <td>{{ contact.location }}</td>
+                        <td>
+                            {% if contact.available_24_7 %}
+                            <i class="bi bi-check-circle text-success"></i>
+                            {% else %}
+                            <i class="bi bi-x-circle text-danger"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'tms:emergency-detail' pk=contact.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            {% if request.user.is_staff or request.user.user_type == 'MINISTRY' %}
+                            <a href="{% url 'tms:emergency-update' pk=contact.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">No emergency contacts found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit Room Type{% else %}Add New Room Type{% endif %} - STMS
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'tms:accommodation-list' %}">Accommodations</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'tms:accommodation-detail' accommodation.pk %}">{{ accommodation.name }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'tms:accommodation-room-types' accommodation.pk %}">Room Types</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if form.instance.pk %}Edit{% else %}Add New{% endif %}
+    </li>
+{% endblock %}
+
+{% block page_title %}
+    {% if form.instance.pk %}Edit Room Type{% else %}Add New Room Type{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Room Type Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'tms:accommodation-room-types' accommodation.pk %}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}Update{% else %}Create{% endif %} Room Type
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        Be specific with room type names (e.g., "Deluxe Double Room")
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        Include all features that differentiate this room type
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        Set accurate capacity for proper booking management
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
