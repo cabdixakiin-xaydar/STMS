@@ -1,0 +1,20 @@
+<!-- accounts/templates/accounts/emails/guide_status_notification.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Status Update</title>
+</head>
+<body>
+    <h2>Dear {{ guide.get_full_name|default:guide.username }},</h2>
+    <p>Your guide application status has been updated to: <strong>{{ status }}</strong></p>
+    
+    {% if guide.status == 'APPROVED' %}
+    <p>You can now login and access your guide dashboard.</p>
+    <a href="{{ protocol }}://{{ domain }}{% url 'login' %}">Login to your account</a>
+    {% elif guide.status == 'REJECTED' %}
+    <p>If you believe this was a mistake, please contact our support team.</p>
+    {% endif %}
+    
+    <p>Best regards,<br>The Travel Team</p>
+</body>
+</html>

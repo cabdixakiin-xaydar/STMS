@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Tour Guide Registration</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Account Information</h5>
+                                <div class="mb-3">
+                                    {{ form.username.label_tag }}
+                                    {{ form.username }}
+                                    {{ form.username.errors }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.email.label_tag }}
+                                    {{ form.email }}
+                                    {{ form.email.errors }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.password1.label_tag }}
+                                    {{ form.password1 }}
+                                    {{ form.password1.errors }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.password2.label_tag }}
+                                    {{ form.password2 }}
+                                    {{ form.password2.errors }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5>Personal Information</h5>
+                                <div class="mb-3">
+                                    {{ form.first_name.label_tag }}
+                                    {{ form.first_name }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.last_name.label_tag }}
+                                    {{ form.last_name }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.phone_number.label_tag }}
+                                    {{ form.phone_number }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h5>Professional Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.license_number.label_tag }}
+                                    {{ form.license_number }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.spoken_languages.label_tag }}
+                                    {{ form.spoken_languages }}
+                                    <small class="text-muted">Comma separated list (e.g., English, Somali, Arabic)</small>
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.biography.label_tag }}
+                                    {{ form.biography }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.hourly_rate.label_tag }}
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        {{ form.hourly_rate }}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.years_experience.label_tag }}
+                                    {{ form.years_experience }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.specialization.label_tag }}
+                                    {{ form.specialization }}
+                                </div>
+                                <div class="mb-3 form-check">
+                                    {{ form.is_available }}
+                                    <label class="form-check-label" for="{{ form.is_available.id_for_label }}">Currently available for tours</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Your application will be reviewed by our team. You'll receive an email once your account is approved.
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

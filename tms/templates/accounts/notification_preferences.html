@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load tz %} {# Load the timezone tag #}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            {% include 'accounts/profile_sidebar.html' %}
+        </div>
+
+        <div class="col-md-9">
+            <div class="card mb-4"> {# Added mb-4 for margin-bottom #}
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Notification Preferences" %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3 form-check form-switch">
+                                {{ field }}
+                                <label class="form-check-label" for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">{% trans "Save Preferences" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {# --- New card for User Activity --- #}
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Account Activity" %}</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>{% trans "Account Created" %}:</strong>
+                            <span>
+                                {% if user_activity.date_joined %}
+                                    {{ user_activity.date_joined|localtime|date:"F j, Y, P" }}
+                                {% else %}
+                                    {% trans "N/A" %}
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>{% trans "Last Login" %}:</strong>
+                            <span>
+                                {% if user_activity.last_login %}
+                                    {{ user_activity.last_login|localtime|date:"F j, Y, P" }}
+                                {% else %}
+                                    {% trans "Never logged in" %}
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>{% trans "Last Logout" %}:</strong>
+                            <span>
+                                {% if user_activity.last_logout %}
+                                    {{ user_activity.last_logout|localtime|date:"F j, Y, P" }}
+                                {% else %}
+                                    {% trans "N/A (or never logged out)" %}
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>{% trans "Last Password Change" %}:</strong>
+                            <span>
+                                {% if user_activity.last_password_change %}
+                                    {{ user_activity.last_password_change|localtime|date:"F j, Y, P" }}
+                                {% else %}
+                                    {% trans "N/A (or never changed)" %}
+                                {% endif %}
+                            </span>
+                        </li>
+                    </ul>
+                    <small class="text-muted mt-3 d-block">
+                        {% trans "All times are displayed in your local timezone." %}
+                    </small>
+                </div>
+            </div>
+            {# --- End New card --- #}
+        </div>
+    </div>
+</div>
+{% endblock %}

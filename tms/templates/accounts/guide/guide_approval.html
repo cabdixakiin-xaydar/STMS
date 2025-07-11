@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Review Guide Application</h3>
+                        <span class="badge bg-light text-dark">
+                            {{ object.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ object.profile_picture.url|default:'/static/images/default-profile.png' }}" 
+                                 class="img-thumbnail mb-3" 
+                                 alt="Profile Picture"
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                            <h4>{{ object.get_full_name }}</h4>
+                            <p class="text-muted">@{{ object.username }}</p>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <h5>Contact Information</h5>
+                            <ul class="list-group list-group-flush mb-3">
+                                <li class="list-group-item">
+                                    <strong>Email:</strong> {{ object.email }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Phone:</strong> {{ object.phone_number|default:"-" }}
+                                </li>
+                            </ul>
+                            
+                            <h5>Professional Information</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>License Number:</strong> {{ object.guide_profile.license_number }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Experience:</strong> {{ object.guide_profile.years_experience }} years
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Hourly Rate:</strong> ${{ object.guide_profile.hourly_rate }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Specialization:</strong> {{ object.guide_profile.specialization }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Languages:</strong> {{ object.guide_profile.spoken_languages }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Biography</h5>
+                        <div class="card bg-light p-3">
+                            {{ object.guide_profile.biography|linebreaks }}
+                        </div>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.status.label_tag }}
+                                    {{ form.status }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end align-items-end h-100">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Save Changes
+                                        </button>
+                                        <a href="{% url 'guide_list' %}" class="btn btn-outline-secondary">
+                                            <i class="fas fa-arrow-left me-2"></i>Back to List
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

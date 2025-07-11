@@ -1,0 +1,14 @@
+<!-- accounts/templates/accounts/emails/guide_status_notification.txt -->
+Dear {{ guide.get_full_name|default:guide.username }},
+
+Your guide application status has been updated to: {{ status }}
+
+{% if guide.status == 'APPROVED' %}
+You can now login and access your guide dashboard:
+{{ protocol }}://{{ domain }}{% url 'login' %}
+{% elif guide.status == 'REJECTED' %}
+If you believe this was a mistake, please contact our support team.
+{% endif %}
+
+Best regards,
+The Tourism Team

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">{% trans "Delete User" %}: {{ target_user.username }}</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">{% trans "Warning!" %}</h5>
+                        <p>
+                            {% blocktrans with username=target_user.username %}
+                            Are you sure you want to permanently delete the user "{{ username }}"?
+                            This action cannot be undone. All associated data will be removed.
+                            {% endblocktrans %}
+                        </p>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="confirm" class="form-label">
+                                {% trans "Type 'DELETE' to confirm" %}
+                            </label>
+                            <input type="text" class="form-control" id="confirm" name="confirm" required
+                                   pattern="DELETE" title="{% trans 'Please type DELETE to confirm' %}">
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'accounts:user-detail' pk=target_user.pk %}" class="btn btn-secondary">
+                                {% trans "Cancel" %}
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>{% trans "Permanently Delete User" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

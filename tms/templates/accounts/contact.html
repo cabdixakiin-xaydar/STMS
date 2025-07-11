@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Contact Support</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-headset fa-4x text-primary mb-3"></i>
+                        <h2>Need Help?</h2>
+                        <p class="lead">Our support team is here to assist you</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                                    <h4>Email Us</h4>
+                                    <p>support@tourismmanagement.com</p>
+                                    <a href="mailto:support@tourismmanagement.com" class="btn btn-outline-primary">
+                                        Send Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-phone fa-3x text-primary mb-3"></i>
+                                    <h4>Call Us</h4>
+                                    <p>+252 61 123 4567</p>
+                                    <a href="tel:+252611234567" class="btn btn-outline-primary">
+                                        Call Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <p>Or return to our homepage</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Home Page
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
